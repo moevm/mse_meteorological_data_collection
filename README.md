@@ -5,6 +5,6 @@
 * Показывать текущую погоду на 6 дней вперед с интервалом в 3 часа.
 
 ## Cборка на Android
-* Телефон
+* [APK](https://github.com/moevm/mse_meteorological_data_collection/raw/android/app-debug.apk)
 
 ## Cборка на IOS
