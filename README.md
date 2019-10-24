@@ -6,9 +6,11 @@
 
 ## Cборка на Android
 * Телефон
-    - Скачать и установить [APK](https://github.com/moevm/mse_meteorological_data_collection/raw/android/app-debug.apk)
+    - В настройках телефона разрешить установку приложений из непроверенных источников ([Ссылка на видео](https://www.youtube.com/watch?v=6Xken07bluM))
+    - Скачать и установить[APK](https://github.com/moevm/mse_meteorological_data_collection/raw/android/app-debug.apk)
 * Эмулятор
     - Запусть эмулятор
+    - В настройках разрешить установку приложений из непроверенных источников ([Ссылка на видео](https://www.youtube.com/watch?v=6Xken07bluM))
     - Открыть браузер в эмуляторе
     - Скачать и установить [APK](https://github.com/moevm/mse_meteorological_data_collection/raw/android/app-debug.apk)
 ## Cборка на IOS
