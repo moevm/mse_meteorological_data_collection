@@ -10,6 +10,10 @@
     - Скачать и установить [APK](https://github.com/moevm/mse_meteorological_data_collection/raw/android/app-debug.apk)
 * Эмулятор
     - Скачать JDK(Java Development Kit)([Ссылка](https://www.oracle.com/technetwork/java/javase/downloads/index.html))
+    - Скачать Android SDK
+            MAC([Ссылка](https://dl.google.com/android/repository/sdk-tools-darwin-4333796.zip))
+            Windows([Ссылка](https://dl.google.com/android/repository/sdk-tools-windows-4333796.zip))
+            Linux([Ссылка](https://dl.google.com/android/repository/sdk-tools-linux-4333796.zip))
     - Скачать Android Studio([Ссылка](https://developer.android.com/studio))
     - Склонировать проект с ветки android
     - Открыть Android Studio
