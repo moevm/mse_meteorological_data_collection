@@ -7,7 +7,7 @@
 ## Cборка на Android
 * Телефон
     - В настройках телефона разрешить установку приложений из непроверенных источников ([Ссылка на видео](https://www.youtube.com/watch?v=6Xken07bluM))
-    - Скачать и установить [APK](https://github.com/moevm/mse_meteorological_data_collection/raw/android/app-debug.apk)
+    - Скачать и установить [APK](https://github.com/moevm/mse_meteorological_data_collection/blob/android/app-debug.apk)
 * Эмулятор
     - Скачать JDK(Java Development Kit)([Ссылка](https://www.oracle.com/technetwork/java/javase/downloads/index.html))
     - Скачать Android SDK
