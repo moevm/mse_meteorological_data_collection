@@ -25,7 +25,7 @@ class HistoryWeatherRepositoryImpl:HistoryWeatherRepository {
         )
     }
 
-    override fun fetchSeasonalHistoryWeather(
+    override fun fetchQuarterHistoryWeather(
         indexCity: String,
         startYear: String,
         endYear: String
