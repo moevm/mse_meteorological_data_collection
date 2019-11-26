@@ -1,15 +1,13 @@
 package com.weather.domain.converters
 
-import android.util.Log
+import android.text.format.DateFormat
 import com.weather.core.remote.helpers.DateUtils
 import com.weather.core.remote.helpers.toIntOrNull
 import com.weather.core.remote.models.open_weather_models.ForecastApiItem
 import com.weather.core.remote.models.open_weather_models.WeatherResponse
 import com.weather.domain.models.CurrentWeather
-import java.text.DateFormat
 import java.util.*
 import java.util.Calendar.HOUR_OF_DAY
-import kotlin.math.abs
 import kotlin.math.roundToInt
 
 class WeatherConverterImpl : WeatherConverter {
@@ -52,7 +50,10 @@ class WeatherConverterImpl : WeatherConverter {
                 name = "",
                 iconUrl = "http://openweathermap.org/img/w/${weather.first().icon}.png",
                 toolbarAlpha = calculateAlpha(date.hours),
-                dateString = android.text.format.DateFormat.format(DateUtils.defaultForecastFormat, date).toString()
+                dateString = DateFormat.format(
+                    DateUtils.defaultForecastFormat,
+                    date
+                ).toString()
             )
         }
     }

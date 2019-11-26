@@ -2,7 +2,6 @@ package com.weather.domain.repositories
 
 import android.annotation.SuppressLint
 import android.location.LocationManager
-import android.util.Log
 import com.weather.core.remote.providers.WeatherProvider
 import com.weather.domain.converters.WeatherConverter
 import com.weather.domain.models.CurrentWeather
