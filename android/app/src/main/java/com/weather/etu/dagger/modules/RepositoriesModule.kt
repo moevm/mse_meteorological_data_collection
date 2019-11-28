@@ -1,9 +1,12 @@
 package com.weather.etu.dagger.modules
 
 import android.location.LocationManager
+import com.weather.core.remote.providers.FirestoreProvider
 import com.weather.core.remote.providers.WeatherProvider
 import com.weather.domain.converters.WeatherConverter
 import com.weather.domain.converters.WeatherConverterImpl
+import com.weather.domain.repositories.FiresoreRepository
+import com.weather.domain.repositories.FirestoreRepositoryImpl
 import com.weather.domain.repositories.WeatherRepository
 import com.weather.domain.repositories.WeatherRepositoryImpl
 import dagger.Module
@@ -26,4 +29,10 @@ class RepositoriesModule {
     ): WeatherRepository {
         return WeatherRepositoryImpl(provider, converter, locationManager)
     }
+
+    @Singleton
+    @Provides
+    fun provideFirestoreRepository(
+        firestoreProvider: FirestoreProvider
+    ): FiresoreRepository = FirestoreRepositoryImpl(firestoreProvider)
 }

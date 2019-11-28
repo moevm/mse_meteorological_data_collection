@@ -1,6 +1,7 @@
 package com.weather.etu.dagger.modules
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.location.LocationManager
 import dagger.Module
 import dagger.Provides
@@ -11,6 +12,10 @@ class AppModule(val appContext: Context) {
     fun provideContext() = appContext
 
     @Provides
-    fun provideLocationManager(ctx: Context)
-            = ctx.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+    fun provideLocationManager(ctx: Context) =
+        ctx.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+
+    @Provides
+    fun provideSharedPrefs(ctx: Context): SharedPreferences =
+        ctx.getSharedPreferences(ctx.packageName, Context.MODE_PRIVATE)
 }

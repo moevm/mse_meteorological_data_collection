@@ -5,7 +5,7 @@ import io.reactivex.Single
 
 interface WeatherRepository {
 
-    fun fetchCurrentWeather(lat:Double,lon:Double): Single<CurrentWeather>
+    fun fetchCurrentWeather(lat: Double, lon: Double): Single<CurrentWeather>
 
     fun fetchCurrentWeather(): Single<CurrentWeather>
 

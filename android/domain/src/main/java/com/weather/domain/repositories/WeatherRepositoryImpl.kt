@@ -44,8 +44,8 @@ class WeatherRepositoryImpl(
     }
 
 
-
     private fun getCurrentDay(): Single<String> = Single.just(
         SimpleDateFormat("EEEE", Locale.getDefault())
-            .format(Calendar.getInstance().time).toString())
+            .format(Calendar.getInstance().time).toString()
+    )
 }

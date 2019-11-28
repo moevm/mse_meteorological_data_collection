@@ -1,0 +1,83 @@
+{
+  "project_info": {
+    "project_number": "879889630320",
+    "firebase_url": "https://weather-c1070.firebaseio.com",
+    "project_id": "weather-c1070",
+    "storage_bucket": "weather-c1070.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:879889630320:android:6f0abc3f90058505c5a0b5",
+        "android_client_info": {
+          "package_name": "com.weather.etu"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "879889630320-sh8i1j0qnk9sbnjormqkisd67j9vfgd6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyApm8jiOiAyUIdofPlYk0gXEzseYd6-eIw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "879889630320-sh8i1j0qnk9sbnjormqkisd67j9vfgd6.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "879889630320-dos9mv547s5e0ukahan8tgkn4oaa0q0n.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "mdementyev.WeatherApp"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:879889630320:android:d2681e885ae1032ec5a0b5",
+        "android_client_info": {
+          "package_name": "moevm.com.countries"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "879889630320-sh8i1j0qnk9sbnjormqkisd67j9vfgd6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyApm8jiOiAyUIdofPlYk0gXEzseYd6-eIw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "879889630320-sh8i1j0qnk9sbnjormqkisd67j9vfgd6.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "879889630320-dos9mv547s5e0ukahan8tgkn4oaa0q0n.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "mdementyev.WeatherApp"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

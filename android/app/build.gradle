@@ -32,6 +32,8 @@ android {
         exclude 'META-INF/kotlinx-coroutines-io.kotlin_module'
         exclude 'META-INF/ktor-client-core.kotlin_module'
     }
+
+
 }
 
 dependencies {
@@ -80,4 +82,8 @@ dependencies {
 
     implementation project(path: ':core')
     implementation project(path: ':domain')
+
+    implementation supportDependencies.firestore
 }
+
+apply plugin: 'com.google.gms.google-services'
