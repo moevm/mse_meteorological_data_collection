@@ -43,5 +43,8 @@ dependencies {
     def logging_interceptor_version = "3.8.0"
     implementation "com.squareup.okhttp3:logging-interceptor:$logging_interceptor_version"
 
+    def jsoup_version = "1.12.1"
+    implementation "org.jsoup:jsoup:$jsoup_version"
+
     implementation supportDependencies.firestore
 }

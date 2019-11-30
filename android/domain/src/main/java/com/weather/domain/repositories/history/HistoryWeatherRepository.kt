@@ -1,6 +1,7 @@
-package com.weather.domain.repositories
+package com.weather.domain.repositories.history
 
-import com.weather.domain.models.history.HistoryWeather
+import com.weather.core.remote.models.history.HistoryWeather
+import io.reactivex.Single
 
 interface HistoryWeatherRepository {
 
@@ -8,18 +9,17 @@ interface HistoryWeatherRepository {
         indexCity: String,
         startYear: String,
         endYear: String
-    ): HistoryWeather
+    ): Single<HistoryWeather>
 
     fun fetchMonthlyHistoryWeather(
         indexCity: String,
         startYear: String,
         endYear: String
-    ): HistoryWeather
+    ): Single<HistoryWeather>
 
     fun fetchDailyHistoryWeather(
         indexCity: String,
         startYear: String,
         endYear: String
-    ): HistoryWeather
-
+    ): Single<HistoryWeather>
 }

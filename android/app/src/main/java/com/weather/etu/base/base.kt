@@ -6,6 +6,7 @@ import android.widget.DatePicker
 import android.widget.Spinner
 import androidx.appcompat.widget.ListPopupWindow
 import com.google.android.material.snackbar.Snackbar
+import java.text.SimpleDateFormat
 import java.util.*
 
 fun showErrorSnackbar(v: View, t: Throwable) =
@@ -38,4 +39,9 @@ fun DatePicker.getTimeInMil(): Long {
     c.set(Calendar.DAY_OF_MONTH, this.dayOfMonth)
 
     return c.timeInMillis
+}
+
+fun Long.getYearFromMil():String{
+    val format = SimpleDateFormat("yyyy")
+    return format.format(this)
 }

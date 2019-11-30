@@ -1,13 +1,13 @@
-package com.weather.domain.repositories
+package com.weather.core.remote.providers.history
 
-import com.weather.domain.models.history.DataWeather
-import com.weather.domain.models.history.HistoryWeather
+import android.util.Log
+import com.weather.core.remote.models.history.DataWeather
+import com.weather.core.remote.models.history.HistoryWeather
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Element
-import java.lang.IndexOutOfBoundsException
-import java.lang.StringBuilder
+import java.lang.Exception
 
-class HistoryWeatherRepositoryImpl : HistoryWeatherRepository {
+class HistoryWeatherProviderImpl : HistoryWeatherProvider {
 
     companion object {
         const val BASE_URL_HISTORY = "https://www.gismeteo.ru/diary/"
@@ -25,7 +25,7 @@ class HistoryWeatherRepositoryImpl : HistoryWeatherRepository {
         )
     }
 
-    override fun fetchQuarterHistoryWeather(
+    override fun getQuarterHistoryWeather(
         indexCity: String,
         startYear: String,
         endYear: String
@@ -59,7 +59,7 @@ class HistoryWeatherRepositoryImpl : HistoryWeatherRepository {
         )
     }
 
-    override fun fetchMonthlyHistoryWeather(
+    override fun getMonthlyHistoryWeather(
         indexCity: String,
         startYear: String,
         endYear: String
@@ -82,7 +82,7 @@ class HistoryWeatherRepositoryImpl : HistoryWeatherRepository {
         )
     }
 
-    override fun fetchDailyHistoryWeather(
+    override fun getDailyHistoryWeather(
         indexCity: String,
         startYear: String,
         endYear: String
@@ -110,26 +110,31 @@ class HistoryWeatherRepositoryImpl : HistoryWeatherRepository {
         year: String,
         month: String
     ): List<Pair<String, DataWeather>>? {
-        val doc = Jsoup.connect("$BASE_URL_HISTORY$indexCity/$year/$month/").get()
-        val tbodies = doc.select("table").select("tbody")
-        return if (tbodies.isNotEmpty()) {
-            mutableListOf<Pair<String, DataWeather>>().apply {
-                tbodies[1].select("tr").forEach {
-                    val tds = it.select("td")
-                    add(
-                        year + "-" + month + "-" + tds[0].text() to DataWeather(
-                            getTemperature(tds[1]),
-                            getPressure(tds[2]),
-                            getOvercast(tds[3]),
-                            getPhenomenon(tds[4]),
-                            getWind(tds[5]),
-                            getDirectionWind(tds[5])
+        Log.d("HistoryWeather","$BASE_URL_HISTORY$indexCity/$year/$month/")
+        try {
+            val doc = Jsoup.connect("$BASE_URL_HISTORY$indexCity/$year/$month/").get()
+            val tbodies = doc.select("table").select("tbody")
+            return if (tbodies.isNotEmpty()) {
+                mutableListOf<Pair<String, DataWeather>>().apply {
+                    tbodies[1].select("tr").forEach {
+                        val tds = it.select("td")
+                        add(
+                            year + "-" + month + "-" + tds[0].text() to DataWeather(
+                                getTemperature(tds[1]),
+                                getPressure(tds[2]),
+                                getOvercast(tds[3]),
+                                getPhenomenon(tds[4]),
+                                getWind(tds[5]),
+                                getDirectionWind(tds[5])
+                            )
                         )
-                    )
+                    }
                 }
+            } else {
+                null
             }
-        } else {
-            null
+        }catch (e:Exception){
+            return null
         }
     }
 

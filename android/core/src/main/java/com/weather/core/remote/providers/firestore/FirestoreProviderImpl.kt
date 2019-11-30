@@ -1,4 +1,4 @@
-package com.weather.core.remote.providers
+package com.weather.core.remote.providers.firestore
 
 import android.content.SharedPreferences
 import com.google.firebase.firestore.FirebaseFirestore
@@ -6,11 +6,8 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.weather.core.remote.models.firebase.AreaFS
 import com.weather.core.remote.models.firebase.CountryFS
-import io.reactivex.Maybe
 import io.reactivex.Single
-import io.reactivex.internal.operators.maybe.MaybeCreate
 import io.reactivex.schedulers.Schedulers
-import java.lang.Exception
 
 class FirestoreProviderImpl(
     private val sharedPreferences: SharedPreferences
@@ -20,7 +17,7 @@ class FirestoreProviderImpl(
         private const val AREAS_KEY = "areas.key"
     }
 
-    override fun fetchCountries(): Single<List<CountryFS>> {
+    override fun getCountries(): Single<List<CountryFS>> {
         return Single.create<List<CountryFS>> { emitter ->
             FirebaseFirestore
                 .getInstance()
@@ -64,7 +61,7 @@ class FirestoreProviderImpl(
         }
     }
 
-    override fun fetchAreas(): Single<List<AreaFS>> {
+    override fun getAreas(): Single<List<AreaFS>> {
         return checkAreasInSp() ?: Single.create<List<AreaFS>> { emitter ->
             FirebaseFirestore
                 .getInstance()

@@ -2,11 +2,16 @@ package com.weather.etu.presentation.interval_fragment
 
 import androidx.lifecycle.MutableLiveData
 import com.weather.core.remote.models.firebase.CountryFS
-import com.weather.domain.repositories.FiresoreRepository
+import com.weather.domain.repositories.firestore.FiresoreRepository
 import com.weather.etu.app.App
 import com.weather.etu.base.BaseViewModel
 import com.weather.core.remote.models.Interval
 import com.weather.core.remote.models.ParseRequest
+import com.weather.domain.repositories.history.HistoryWeatherRepository
+import com.weather.etu.base.getYearFromMil
+import com.weather.etu.model.CsvFileManager
+import java.io.File
+import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
 
@@ -14,12 +19,17 @@ class IntervalFragmentViewModel : BaseViewModel() {
 
     @Inject
     lateinit var firesoreRepository: FiresoreRepository
+    @Inject
+    lateinit var historyWeatherRepository: HistoryWeatherRepository
+    @Inject
+    lateinit var csvFileManager: CsvFileManager
 
     val countriesLD = MutableLiveData<List<CountryFS>>()
     val areasLD = MutableLiveData<List<String>>()
     val citiesLD = MutableLiveData<List<Pair<String, String>>>()
     val startDateLD = MutableLiveData<Calendar>().apply { postValue(Calendar.getInstance()) }
     val endDateLD = MutableLiveData<Calendar>().apply { postValue(Calendar.getInstance()) }
+    val fileHistoryWeatherLD = MutableLiveData<File?>()
 
     private var request = ParseRequest()
 
@@ -30,7 +40,7 @@ class IntervalFragmentViewModel : BaseViewModel() {
     fun fetchCountries() {
         disposable.add(
             firesoreRepository
-                .getCountries()
+                .fetchCountries()
                 .safeSubscribe(countriesLD::postValue)
         )
     }
@@ -42,7 +52,7 @@ class IntervalFragmentViewModel : BaseViewModel() {
 
     fun onAreaSelected(area: String) {
         disposable.add(
-            firesoreRepository.getArea(area)
+            firesoreRepository.fetchArea(area)
                 .safeSubscribe {
                     val lst = it.cities.toList()
                     onCitySelected(lst.first())
@@ -52,7 +62,7 @@ class IntervalFragmentViewModel : BaseViewModel() {
     }
 
     fun onCitySelected(city: Pair<String, String>) {
-        request = request.copy(cityCode = city.second)
+        request = request.copy(cityName = city.first,cityCode = city.second)
     }
 
     fun onIntervalSelected(interval: Interval) {
@@ -62,27 +72,38 @@ class IntervalFragmentViewModel : BaseViewModel() {
     fun getRequestParams() = request.copy()
 
     fun updateStartDate(time: Calendar) {
-        request = request.copy(startDateMil = time.timeInMillis)
+        val format = SimpleDateFormat("yyyy")
+        request = request.copy(startDateMil =time.timeInMillis)
         startDateLD.postValue(time)
     }
 
     fun updateEndDate(time: Calendar) {
-        request = request.copy(endDatemil = time.timeInMillis)
+        val format = SimpleDateFormat("yyyy")
+        request = request.copy(endDateMil = time.timeInMillis)
         endDateLD.postValue(time)
     }
 
-    // TODO: сделать парсинг
+    //TODO учитывать не только года, но и месяц и день при парсинги. Сейчас ищет только начиная от кого-то года до какого-то ( пример 2017-2019)
     fun onSubmit() {
-        when (request.interval) {
-            Interval.DAY -> {
+        fileHistoryWeatherLD.postValue(null)
+        val startYear = request.startDateMil.getYearFromMil()
+        val endYear = request.endDateMil.getYearFromMil()
+        disposable.add(
+            when (request.interval) {
+                Interval.DAY -> {
+                    historyWeatherRepository.fetchDailyHistoryWeather(request.cityCode,startYear,endYear)
+                }
+                Interval.MONTH -> {
+                    historyWeatherRepository.fetchMonthlyHistoryWeather(request.cityCode,startYear,endYear)
+                }
+                Interval.QUARTER -> {
+                    historyWeatherRepository.fetchQuarterHistoryWeather(request.cityCode,startYear,endYear)
+                }
+            }.flatMap {
+                csvFileManager.saveHistoryWeatherInFile(it,request)
+            }.safeSubscribe {
+                fileHistoryWeatherLD.postValue(it)
             }
-            Interval.MONTH -> {
-            }
-            Interval.YEAR -> {
-            }
-            Interval.SEASON -> {
-            }
-        }
+        )
     }
-
 }

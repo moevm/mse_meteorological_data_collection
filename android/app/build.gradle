@@ -84,6 +84,8 @@ dependencies {
     implementation project(path: ':domain')
 
     implementation supportDependencies.firestore
+    /*csv*/
+    implementation 'net.sf.opencsv:opencsv:2.4'
 }
 
 apply plugin: 'com.google.gms.google-services'

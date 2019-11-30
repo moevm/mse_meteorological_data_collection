@@ -3,6 +3,7 @@ package com.weather.etu.dagger.modules
 import android.content.Context
 import android.content.SharedPreferences
 import android.location.LocationManager
+import com.weather.etu.model.CsvFileManager
 import dagger.Module
 import dagger.Provides
 
@@ -18,4 +19,7 @@ class AppModule(val appContext: Context) {
     @Provides
     fun provideSharedPrefs(ctx: Context): SharedPreferences =
         ctx.getSharedPreferences(ctx.packageName, Context.MODE_PRIVATE)
+
+    @Provides
+    fun provideCsvFileManager() = CsvFileManager()
 }

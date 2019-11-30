@@ -1,9 +1,9 @@
-package com.weather.domain.repositories
+package com.weather.domain.repositories.current
 
 import com.weather.domain.models.CurrentWeather
 import io.reactivex.Single
 
-interface WeatherRepository {
+interface CurrentWeatherRepository {
 
     fun fetchCurrentWeather(lat: Double, lon: Double): Single<CurrentWeather>
 

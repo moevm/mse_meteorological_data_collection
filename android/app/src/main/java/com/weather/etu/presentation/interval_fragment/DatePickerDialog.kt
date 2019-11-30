@@ -52,7 +52,7 @@ class DatePickerDialog : BottomSheetDialogFragment() {
         c.timeInMillis = if (type == INSTANCE_TYPE.START) {
             navViewModel.getRequestParams().startDateMil
         } else {
-            navViewModel.getRequestParams().endDatemil
+            navViewModel.getRequestParams().endDateMil
         }
 
         datePicker.updateDate(

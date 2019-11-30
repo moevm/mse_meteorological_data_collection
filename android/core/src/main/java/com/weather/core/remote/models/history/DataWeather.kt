@@ -1,4 +1,4 @@
-package com.weather.domain.models.history
+package com.weather.core.remote.models.history
 
 data class DataWeather(
     val temperature:String?,

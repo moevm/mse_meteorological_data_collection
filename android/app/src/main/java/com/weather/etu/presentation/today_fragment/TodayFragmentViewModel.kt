@@ -1,9 +1,8 @@
 package com.weather.etu.presentation.today_fragment
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.weather.domain.models.CurrentWeather
-import com.weather.domain.repositories.WeatherRepository
+import com.weather.domain.repositories.current.CurrentWeatherRepository
 import com.weather.etu.app.App
 import com.weather.etu.base.BaseViewModel
 import javax.inject.Inject
@@ -11,7 +10,7 @@ import javax.inject.Inject
 class TodayFragmentViewModel: BaseViewModel() {
 
     @Inject
-    lateinit var repository: WeatherRepository
+    lateinit var repositoryCurrent: CurrentWeatherRepository
 
     val currentWeatherLiveData = MutableLiveData<CurrentWeather>()
     val weatherForecastLiveData = MutableLiveData<List<CurrentWeather>>()
@@ -22,14 +21,14 @@ class TodayFragmentViewModel: BaseViewModel() {
 
     fun fetchCurrentWeather(){
         disposable.add(
-            repository.fetchCurrentWeather()
+            repositoryCurrent.fetchCurrentWeather()
                 .safeSubscribe(currentWeatherLiveData::postValue)
         )
     }
 
     fun fetchWeatherForecast() {
         disposable.add(
-            repository.fetchWeatherForecast()
+            repositoryCurrent.fetchWeatherForecast()
                 .safeSubscribe(weatherForecastLiveData::postValue)
         )
     }
