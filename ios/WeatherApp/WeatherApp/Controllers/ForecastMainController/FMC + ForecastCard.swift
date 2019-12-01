@@ -24,11 +24,7 @@ extension ForecastMainController {
         self.view.addSubview(forecastCardController.view)
         
         forecastCardController.view.frame = CGRect(x: 0, y: self.view.frame.height - cardHandleAreaHeight - tabbarHeight, width: self.view.bounds.width, height: cardHeight)
-        print(self.view.frame.height)
-        print(self.navBarHeight)
-        print(self.cardHeight)
-        print(self.tabbarHeight)
-        print(self.cardHandleAreaHeight)
+
         forecastCardController.tableViewHeight.constant = self.cardHeight - self.navBarHeight - self.tabbarHeight - self.cardHandleAreaHeight - 15
         
         forecastCardController.view.clipsToBounds = true
