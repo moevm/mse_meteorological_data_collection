@@ -8,6 +8,8 @@ import com.weather.core.remote.models.ParseRequest
 import com.weather.core.remote.models.history.HistoryWeather
 import com.weather.etu.base.getYearFromMil
 import io.reactivex.Completable
+import io.reactivex.Flowable
+import io.reactivex.Observable
 import io.reactivex.Single
 import java.io.File
 import java.io.FileOutputStream
@@ -15,11 +17,19 @@ import java.io.OutputStreamWriter
 import java.lang.Exception
 
 class CsvFileManager {
-    companion object{
-        const val DIR = "HistoryWeather"
-        const val EXTENSION = ".csv"
-    }
 
+     companion object{
+         const val DIR = "HistoryWeather"
+         const val EXTENSION = ".csv"
+     }
+
+     fun getFiles(): Single<List<File>> {
+         return Single.create{
+             val dir = Environment.getExternalStoragePublicDirectory(DIR).apply { mkdirs() }
+             val files = dir.listFiles()
+             it.onSuccess(files?.toList() ?: listOf())
+         }
+     }
 
      fun saveHistoryWeatherInFile(data: HistoryWeather,request: ParseRequest):Single<File>{
         return Single.create{emitter->

@@ -21,7 +21,7 @@ class MainActivityViewModel: BaseViewModel() {
 
     fun onIntervalCLicked() = changeState(INTERVAL)
 
-    fun onChartClicked() = changeState(CHART)
+    fun onChartClicked() = changeState(FILES)
 
     private fun changeState(state: STATE, action: (() -> Unit)? = null): Boolean {
         if (state != currentState) {

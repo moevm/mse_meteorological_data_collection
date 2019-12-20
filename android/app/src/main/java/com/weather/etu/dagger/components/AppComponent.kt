@@ -7,6 +7,7 @@ import com.weather.etu.app.App
 import com.weather.etu.dagger.modules.ProvidersModule
 import com.weather.etu.presentation.MainActivityViewModel
 import com.weather.etu.presentation.chart_fragment.ChartFragmentViewModel
+import com.weather.etu.presentation.files_fragment.FilesFragmentViewModel
 import com.weather.etu.presentation.interval_fragment.IntervalFragmentViewModel
 import com.weather.etu.presentation.today_fragment.TodayFragmentViewModel
 import dagger.Component
@@ -29,4 +30,6 @@ interface AppComponent {
     fun inject(obj: IntervalFragmentViewModel)
 
     fun inject(obj: TodayFragmentViewModel)
+
+    fun inject(obj: FilesFragmentViewModel)
 }

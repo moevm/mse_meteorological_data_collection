@@ -8,7 +8,7 @@ import dagger.Module
 import dagger.Provides
 
 @Module
-class AppModule(val appContext: Context) {
+class AppModule(private val appContext: Context) {
     @Provides
     fun provideContext() = appContext
 

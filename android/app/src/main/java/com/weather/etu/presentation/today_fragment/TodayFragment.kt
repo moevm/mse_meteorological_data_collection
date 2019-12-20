@@ -9,7 +9,6 @@ import androidx.lifecycle.ViewModelProviders
 import com.bumptech.glide.Glide
 import com.weather.etu.R
 import com.weather.etu.presentation.BaseMainActivityFragment
-import com.weather.etu.presentation.today_fragment.adapter.ForecastAdapter
 import kotlinx.android.synthetic.main.fragment_today.*
 
 

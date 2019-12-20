@@ -20,6 +20,10 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning"
         android:usesCleartextTraffic="true">
+        <provider android:name="androidx.core.content.FileProvider" android:grantUriPermissions="true" android:exported="false" android:authorities="${applicationId}.provider">
+            <meta-data android:name="android.support.FILE_PROVIDER_PATHS" android:resource="@xml/provider_paths"/>
+        </provider>
+
         <activity android:name=".presentation.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

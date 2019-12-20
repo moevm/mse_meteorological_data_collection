@@ -1,15 +1,13 @@
 package com.weather.etu.presentation
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentPagerAdapter
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.weather.etu.R
 import com.weather.etu.base.BaseActivity
-import com.weather.etu.presentation.chart_fragment.ChartFragment
+import com.weather.etu.presentation.files_fragment.FilesFragment
 import com.weather.etu.presentation.interval_fragment.IntervalFragment
 import com.weather.etu.presentation.today_fragment.TodayFragment
 import kotlinx.android.synthetic.main.activity_main.*
@@ -20,7 +18,7 @@ class MainActivity : BaseActivity<MainActivityViewModel>() {
         enum class STATE {
             TODAY,
             INTERVAL,
-            CHART
+            FILES
         }
     }
 
@@ -36,7 +34,7 @@ class MainActivity : BaseActivity<MainActivityViewModel>() {
             when (it) {
                 Companion.STATE.TODAY -> view_pager.currentItem = 0
                 Companion.STATE.INTERVAL -> view_pager.currentItem = 1
-                Companion.STATE.CHART -> view_pager.currentItem = 2
+                Companion.STATE.FILES -> view_pager.currentItem = 2
             }
         })
 
@@ -68,7 +66,7 @@ class MainActivity : BaseActivity<MainActivityViewModel>() {
             return when (position) {
                 0 -> TodayFragment()
                 1 -> IntervalFragment()
-                2 -> ChartFragment()
+                2 -> FilesFragment()
                 else -> throw
                 IllegalArgumentException("wrong position, expected 0..2, but found: $position")
             }

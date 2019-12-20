@@ -1,4 +1,4 @@
-package com.weather.etu.presentation.today_fragment.adapter
+package com.weather.etu.presentation.today_fragment
 
 import android.view.LayoutInflater
 import android.view.View
