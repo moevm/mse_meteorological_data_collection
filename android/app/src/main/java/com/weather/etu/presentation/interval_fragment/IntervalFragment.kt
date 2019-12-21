@@ -12,6 +12,7 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.snackbar.Snackbar
+import com.weather.core.remote.models.City
 import com.weather.core.remote.models.Interval
 import com.weather.core.remote.models.firebase.CountryFS
 import com.weather.etu.R
@@ -23,15 +24,15 @@ import java.util.*
 
 
 class IntervalFragment : BaseMainActivityFragment<IntervalFragmentViewModel>() {
-    companion object{
+    companion object {
         const val CODE_REQUEST_EXTERNAL_STORAGE_PERMISSIONS = 1
     }
 
-    private var havePermissions:Boolean?=null
+    private var havePermissions: Boolean? = null
 
     override fun onResume() {
         super.onResume()
-        if(!checkExternalStoragePermissions()&&havePermissions==null){
+        if (!checkExternalStoragePermissions() && havePermissions == null) {
             requestExternalStoragePermissions()
         }
     }
@@ -50,28 +51,41 @@ class IntervalFragment : BaseMainActivityFragment<IntervalFragmentViewModel>() {
         permissions: Array<out String>,
         grantResults: IntArray
     ) {
-        when(requestCode){
+        when (requestCode) {
             CODE_REQUEST_EXTERNAL_STORAGE_PERMISSIONS -> {
-                havePermissions = if(grantResults.isNotEmpty()&&grantResults[0] == PackageManager.PERMISSION_GRANTED
-                    && grantResults[1]== PackageManager.PERMISSION_GRANTED){
-                    Toast.makeText(context!!,"Разрешения на работу с файлами даны", Toast.LENGTH_LONG).show()
-                    true
-                }else{
-                    Toast.makeText(context!!,"\"Разрешения на работу с файлами не даны", Toast.LENGTH_LONG).show()
-                    false
-                }
+                havePermissions =
+                    if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED
+                        && grantResults[1] == PackageManager.PERMISSION_GRANTED
+                    ) {
+                        Toast.makeText(
+                            context!!,
+                            "Разрешения на работу с файлами даны",
+                            Toast.LENGTH_LONG
+                        ).show()
+                        true
+                    } else {
+                        Toast.makeText(
+                            context!!,
+                            "\"Разрешения на работу с файлами не даны",
+                            Toast.LENGTH_LONG
+                        ).show()
+                        false
+                    }
             }
         }
     }
 
-    private fun requestExternalStoragePermissions(){
+    private fun requestExternalStoragePermissions() {
         requestPermissions(
-            arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE),
+            arrayOf(
+                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                Manifest.permission.READ_EXTERNAL_STORAGE
+            ),
             CODE_REQUEST_EXTERNAL_STORAGE_PERMISSIONS
         )
     }
 
-    private fun checkExternalStoragePermissions():Boolean {
+    private fun checkExternalStoragePermissions(): Boolean {
         return ContextCompat.checkSelfPermission(
             context!!,
             Manifest.permission.WRITE_EXTERNAL_STORAGE
@@ -83,10 +97,10 @@ class IntervalFragment : BaseMainActivityFragment<IntervalFragmentViewModel>() {
     }
 
     private val countriesAdapter by lazy {
-    ArrayAdapter<CountryFS>(context!!, R.layout.item_spinner_default, arrayListOf())
-        .apply {
-            setDropDownViewResource(R.layout.item_spinner_opened)
-        }
+        ArrayAdapter<CountryFS>(context!!, R.layout.item_spinner_default, arrayListOf())
+            .apply {
+                setDropDownViewResource(R.layout.item_spinner_opened)
+            }
     }
 
     private val areasAdapter by lazy {
@@ -97,7 +111,7 @@ class IntervalFragment : BaseMainActivityFragment<IntervalFragmentViewModel>() {
     }
 
     private val citiesAdapter by lazy {
-        ArrayAdapter<Pair<String, String>>(context!!, R.layout.item_spinner_default, arrayListOf())
+        ArrayAdapter<City>(context!!, R.layout.item_spinner_default, arrayListOf())
             .apply {
                 setDropDownViewResource(R.layout.item_spinner_opened)
             }
@@ -122,24 +136,28 @@ class IntervalFragment : BaseMainActivityFragment<IntervalFragmentViewModel>() {
     override val bindViews = { _: View ->
         countries_spinner.apply {
             limitDropdownHeight()
+            setTitle("Выберите страну")
             adapter = countriesAdapter
             onItemSelected(viewModel::onCountrySelected)
         }
 
         areas_spinner.apply {
             limitDropdownHeight()
+            setTitle("Выберите область")
             adapter = areasAdapter
             onItemSelected(viewModel::onAreaSelected)
         }
 
         cities_spinner.apply {
             limitDropdownHeight(500)
+            setTitle("Выберите город")
             adapter = citiesAdapter
             onItemSelected(viewModel::onCitySelected)
         }
 
         intervals_spinner.apply {
             limitDropdownHeight(500)
+            setTitle("Выберите интервал")
             adapter = intervalsSpinner
             onItemSelected(viewModel::onIntervalSelected)
         }
@@ -189,11 +207,15 @@ class IntervalFragment : BaseMainActivityFragment<IntervalFragmentViewModel>() {
         })
 
         viewModel.fileHistoryWeatherLD.observe(this, Observer {
-            if(it!=null) {
-                Snackbar.make(btn_search, "Файл находится: ${it.absolutePath}", Snackbar.LENGTH_LONG).show()
+            if (it != null) {
+                Snackbar.make(
+                    btn_search,
+                    "Файл находится: ${it.absolutePath}",
+                    Snackbar.LENGTH_LONG
+                ).show()
                 btn_search.visibility = View.VISIBLE
                 search_progress_bar.visibility = View.GONE
-            }else{
+            } else {
                 btn_search.visibility = View.GONE
                 search_progress_bar.visibility = View.VISIBLE
             }
