@@ -1,0 +1,2 @@
+include ':app', ':domain', ':core'
+rootProject.name='Weather'

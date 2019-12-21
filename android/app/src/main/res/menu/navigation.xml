@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/menu_first"
+        android:icon="@android:drawable/btn_plus"
+        android:title="Today" />
+
+    <item
+        android:id="@+id/menu_second"
+        android:icon="@android:drawable/btn_plus"
+        android:title="Interval" />
+
+    <item
+        android:id="@+id/menu_third"
+        android:icon="@android:drawable/btn_plus"
+        android:title="Files" />
+
+</menu>

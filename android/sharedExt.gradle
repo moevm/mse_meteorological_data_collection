@@ -1,0 +1,10 @@
+ext {
+
+//Version
+
+    def firestore_version = "21.3.0"
+//Support Libraries dependencies
+    supportDependencies = [
+            firestore: "com.google.firebase:firebase-firestore:$firestore_version",
+    ]
+}
