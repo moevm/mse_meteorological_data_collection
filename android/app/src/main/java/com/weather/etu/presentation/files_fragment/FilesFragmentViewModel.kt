@@ -33,4 +33,14 @@ class FilesFragmentViewModel:BaseViewModel() {
                 }
         )
     }
+
+    fun deleteFile(name:String){
+        disposable.add(
+            csvFileManager.deleteFile(name)
+                .safeSubscribe {
+                    fetchFiles()
+                }
+        )
+    }
+
 }

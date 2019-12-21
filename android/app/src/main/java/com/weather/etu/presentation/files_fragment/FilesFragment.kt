@@ -1,5 +1,6 @@
 package com.weather.etu.presentation.files_fragment
 
+import android.app.AlertDialog
 import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.os.Bundle
@@ -15,6 +16,9 @@ import com.weather.etu.BuildConfig
 import com.weather.etu.R
 import com.weather.etu.model.State
 import com.weather.etu.presentation.BaseMainActivityFragment
+import com.weather.etu.presentation.chart_activity.ChartActivity
+import com.weather.etu.presentation.statistic_activity.StatisticActivity
+import com.weather.etu.presentation.statistic_activity.StatisticActivityViewModel
 import kotlinx.android.synthetic.main.fragment_files.*
 import java.io.File
 import java.net.URLConnection
@@ -23,6 +27,7 @@ import java.net.URLConnection
 class FilesFragment : BaseMainActivityFragment<FilesFragmentViewModel>() {
 
     private val adapter by lazy { FilesAdapter() }
+    private var alertDialog: AlertDialog? = null
 
     override val viewModel by lazy {
         ViewModelProviders.of(this)[FilesFragmentViewModel::class.java]
@@ -43,6 +48,11 @@ class FilesFragment : BaseMainActivityFragment<FilesFragmentViewModel>() {
         viewModel.fetchFiles()
     }
 
+    override fun onPause() {
+        super.onPause()
+        alertDialog?.dismiss()
+    }
+
     override val bindViews = { _: View ->
 
         adapter.attachCallback(object : com.weather.etu.base.BaseAdapter.BaseAdapterCallback<File>{
@@ -52,7 +62,8 @@ class FilesFragment : BaseMainActivityFragment<FilesFragmentViewModel>() {
             }
 
             override fun onLongClick(model: File, view: View): Boolean {
-                return false
+                openHandleDialog(model)
+                return true
             }
         })
 
@@ -96,6 +107,23 @@ class FilesFragment : BaseMainActivityFragment<FilesFragmentViewModel>() {
             } catch (e: ActivityNotFoundException) {
                 Toast.makeText(context!!, "There's no program to open this file", Toast.LENGTH_LONG).show()
             }
+        }
+    }
+
+    private fun openHandleDialog(file:File){
+        if(activity!=null &&!activity!!.isFinishing){
+            alertDialog = AlertDialog.Builder(context!!)
+                .setTitle(R.string.select_an_action)
+                .setItems(R.array.actions){dialog,item->
+                    when(item){
+                        0 -> startActivity(ChartActivity.newIntent(context!!,file.name))
+                        1 -> startActivity(StatisticActivity.newIntent(context!!,file.name))
+                        2 -> viewModel.deleteFile(file.name)
+                    }
+                    dialog.dismiss()
+                }
+                .create()
+            alertDialog?.show()
         }
     }
 }

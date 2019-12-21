@@ -5,6 +5,7 @@ import android.os.Environment
 import android.util.Log
 import au.com.bytecode.opencsv.CSVWriter
 import com.weather.core.remote.models.ParseRequest
+import com.weather.core.remote.models.history.DataWeather
 import com.weather.core.remote.models.history.HistoryWeather
 import com.weather.etu.base.getYearFromMil
 import io.reactivex.Completable
@@ -15,6 +16,10 @@ import java.io.File
 import java.io.FileOutputStream
 import java.io.OutputStreamWriter
 import java.lang.Exception
+import android.widget.Toast
+import au.com.bytecode.opencsv.CSVReader
+import java.io.FileReader
+
 
 class CsvFileManager {
 
@@ -28,6 +33,37 @@ class CsvFileManager {
              val dir = Environment.getExternalStoragePublicDirectory(DIR).apply { mkdirs() }
              val files = dir.listFiles()
              it.onSuccess(files?.toList() ?: listOf())
+         }
+     }
+
+     fun deleteFile(name:String):Completable{
+         return Completable.create {
+             val file = getFileFromExternalStorage(name)
+             file?.delete()
+             it.onComplete()
+         }
+     }
+
+     fun fetchHistoryWeatherFromFile(name:String):Single<HistoryWeather>{
+         return Single.create {
+             val file = getFileFromExternalStorage(name)!!
+             val historyWeather = mutableListOf<Pair<String, DataWeather>>()
+             val reader = CSVReader(FileReader(file.absolutePath))
+             var nextLine: Array<String>? = reader.readNext()
+             while (nextLine != null) {
+                 val date = nextLine[0]
+                 val dataWeather = DataWeather(
+                     nextLine[1],
+                     nextLine[2],
+                     nextLine[3],
+                     nextLine[4],
+                     nextLine[5],
+                     nextLine[6]
+                 )
+                 historyWeather.add(Pair(date,dataWeather))
+                 nextLine = reader.readNext()
+             }
+             it.onSuccess(HistoryWeather(historyWeather))
          }
      }
 

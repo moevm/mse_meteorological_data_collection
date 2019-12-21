@@ -3,6 +3,25 @@
     <string name="today">сегодня</string>
     <string name="empty_data">Вы еще не сохраняли файлы с историей погоды</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="select_an_action">Выберите действие:</string>
+    <string-array name="actions">
+        <item>Показать график</item>
+        <item>Показать статистику</item>
+        <item>Удалить</item>
+    </string-array>
+
+    <string name="statistic_average_temperature">Средняя температура за интервал(гр): </string>
+    <string name="statistic_min_temperature">Минимальная температура за интервал(гр): </string>
+    <string name="statistic_max_temperature">Максимальная температура за интервал(гр): </string>
+    <string name="statistic_mod_temperature">Мода(гр): </string>
+
+    <string name="statistic_average_pressure">Среднее давление за интервал(гПА): </string>
+    <string name="statistic_min_pressure">Минимальное давление за интервал(гПА): </string>
+    <string name="statistic_max_pressure">Максимальное давление за интервал(гПА): </string>
+    <string name="statistic_mod_pressure">Мода(гПА): </string>
+
+    <string name="statistic_average_wind">Средняя скорость ветра за интервал(м/c): </string>
+    <string name="statistic_min_wind">Минимальная скорость ветра за интервал(м/c): </string>
+    <string name="statistic_max_wind">Максимальная сокрость ветра за интервал(м/c): </string>
+    <string name="statistic_mod_wind">Мода(м/c): </string>
 </resources>
