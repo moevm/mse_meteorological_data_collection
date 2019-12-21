@@ -3,6 +3,7 @@ package com.weather.etu.presentation.files_fragment
 import android.app.AlertDialog
 import android.content.ActivityNotFoundException
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 
 import android.view.LayoutInflater
@@ -55,7 +56,7 @@ class FilesFragment : BaseMainActivityFragment<FilesFragmentViewModel>() {
 
     override val bindViews = { _: View ->
 
-        adapter.attachCallback(object : com.weather.etu.base.BaseAdapter.BaseAdapterCallback<File>{
+        adapter.attachCallback(object : com.weather.etu.base.BaseAdapter.BaseAdapterCallback<File> {
 
             override fun onItemClick(model: File, view: View) {
                 openFile(model)
@@ -67,13 +68,13 @@ class FilesFragment : BaseMainActivityFragment<FilesFragmentViewModel>() {
             }
         })
 
-        with(files_recycler_view){
+        with(files_recycler_view) {
             layoutManager = LinearLayoutManager(context)
             this.adapter = this@FilesFragment.adapter
         }
 
-        viewModel.state.observe(this,androidx.lifecycle.Observer {state->
-            when(state){
+        viewModel.state.observe(this, androidx.lifecycle.Observer { state ->
+            when (state) {
                 is State.LoadingState -> {
                     files_progress_bar.visibility = View.VISIBLE
                     files_recycler_view.visibility = View.INVISIBLE
@@ -94,9 +95,10 @@ class FilesFragment : BaseMainActivityFragment<FilesFragmentViewModel>() {
         })
     }
 
-    private fun openFile(file:File){
+    private fun openFile(file: File) {
         file.setReadable(true)
-        val path = FileProvider.getUriForFile(context!!, BuildConfig.APPLICATION_ID + ".provider", file)
+        val path =
+            FileProvider.getUriForFile(context!!, BuildConfig.APPLICATION_ID + ".provider", file)
         val mimeType = URLConnection.guessContentTypeFromName(file.name)
         Intent(Intent.ACTION_VIEW).apply {
             setDataAndType(path, mimeType)
@@ -105,25 +107,41 @@ class FilesFragment : BaseMainActivityFragment<FilesFragmentViewModel>() {
             try {
                 startActivity(it)
             } catch (e: ActivityNotFoundException) {
-                Toast.makeText(context!!, "There's no program to open this file", Toast.LENGTH_LONG).show()
+                Toast.makeText(context!!, "There's no program to open this file", Toast.LENGTH_LONG)
+                    .show()
             }
         }
     }
 
-    private fun openHandleDialog(file:File){
-        if(activity!=null &&!activity!!.isFinishing){
+    private fun openHandleDialog(file: File) {
+        if (activity != null && !activity!!.isFinishing) {
             alertDialog = AlertDialog.Builder(context!!)
                 .setTitle(R.string.select_an_action)
-                .setItems(R.array.actions){dialog,item->
-                    when(item){
-                        0 -> startActivity(ChartActivity.newIntent(context!!,file.name))
-                        1 -> startActivity(StatisticActivity.newIntent(context!!,file.name))
-                        2 -> viewModel.deleteFile(file.name)
+                .setItems(R.array.actions) { dialog, item ->
+                    when (item) {
+                        0 -> startActivity(ChartActivity.newIntent(context!!, file.name))
+                        1 -> startActivity(StatisticActivity.newIntent(context!!, file.name))
+                        2 -> shareFile(file)
+                        3 -> viewModel.deleteFile(file.name)
                     }
                     dialog.dismiss()
                 }
                 .create()
             alertDialog?.show()
         }
+    }
+
+    private fun shareFile(file: File) {
+        val uri = FileProvider.getUriForFile(
+            requireContext(),
+            requireContext().packageName + ".provider",
+            file
+        )
+        val shareIntent = Intent(Intent.ACTION_SEND).apply {
+            type = "text/csv"
+            putExtra(Intent.EXTRA_STREAM, uri)
+        }
+
+        startActivity(Intent.createChooser(shareIntent, "Share CSV File"))
     }
 }
