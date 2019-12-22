@@ -12,6 +12,7 @@ pod 'SwiftyJSON', '~> 4.0'
 pod 'Firebase/Core'
 pod 'Firebase/Firestore'
 pod 'SwiftSoup'
+pod 'Charts'
 
   target 'WeatherAppTests' do
     inherit! :search_paths

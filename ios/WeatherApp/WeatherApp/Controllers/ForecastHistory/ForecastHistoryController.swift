@@ -40,6 +40,8 @@ class ForecastHistoryController: UIViewController {
         
         initPickers()
         
+        addHistoryInUserDefault()
+        
         db = Firestore.firestore()
         searchData = SearchData()
         
@@ -86,17 +88,44 @@ class ForecastHistoryController: UIViewController {
         }
     }
     
+    func addHistoryInUserDefault(historyWeather: [DataWeatherForList]? = nil) {
+        let userDefaults = UserDefaults.standard
+        if let decodedData = userDefaults.data(forKey: "historyWeather") {
+            if let weatherData = historyWeather {
+                var decodedHistoryWeather = NSKeyedUnarchiver.unarchiveObject(with: decodedData) as! [DataWeatherForList]
+                decodedHistoryWeather.append(contentsOf: weatherData)
+                let encodedData: Data = NSKeyedArchiver.archivedData(withRootObject: decodedHistoryWeather)
+                userDefaults.set(encodedData, forKey: "historyWeather")
+                userDefaults.synchronize()
+            }
+        } else {
+            let historyWeatherList: [DataWeatherForList] = []
+            let encodedData: Data = NSKeyedArchiver.archivedData(withRootObject: historyWeatherList)
+            userDefaults.set(encodedData, forKey: "historyWeather")
+            userDefaults.synchronize()
+        }
+    }
+    
     func saveInCSV(dataHistory: HistoryWeather) {
         let fileName = "\(searchData?.cityName ?? "-")-\(searchData?.startYear ?? "-")-\(searchData?.endYear ?? "-").csv"
         let path = NSURL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent(fileName)
         
         var csvText = "Дата,Температура,Давление,Облачность,Явления,Ветер,Направление ветра\n"
         
+        var dataWeatherForList: [DataWeatherForList] = []
+        
         for item in dataHistory.historyWeather {
             let newLine = "\(item.date),\(item.data.temperature ?? "-"),\(item.data.pressure ?? "-"),\(item.data.overcast ?? "-"),\(item.data.phenomenon ?? "-"),\(item.data.wind ?? "-"),\(item.data.directionWind ?? "-")\n"
             csvText += newLine
+            dataWeatherForList.append(DataWeatherForList(titleName: fileName, date: item.date, temperature: item.data.temperature ?? "-", pressure: item.data.pressure ?? "-", overcast: item.data.overcast ?? "-", phenomenon: item.data.phenomenon ?? "-", wind: item.data.wind ?? "-", directionWind: item.data.directionWind ?? "-"))
         }
+        addHistoryInUserDefault(historyWeather: dataWeatherForList)
         
+        //Получение данных
+        let userDefaults = UserDefaults.standard
+        let decodedData = userDefaults.data(forKey: "historyWeather")
+        let decodedHistoryWeather = NSKeyedUnarchiver.unarchiveObject(with: decodedData!) as! [DataWeatherForList]
+
         do {
             try csvText.write(to: path!, atomically: true, encoding: String.Encoding.utf8)
                                 

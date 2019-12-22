@@ -9,6 +9,7 @@
 import Foundation
 
 struct DataWeather {
+    var date: String? = nil
     let temperature: String?
     let pressure: String?
     let overcast: String?
