@@ -1,6 +1,7 @@
 package com.weather.etu.presentation.interval_fragment
 
 import androidx.lifecycle.MutableLiveData
+import com.weather.core.remote.models.City
 import com.weather.core.remote.models.firebase.CountryFS
 import com.weather.domain.repositories.firestore.FiresoreRepository
 import com.weather.etu.app.App
@@ -26,7 +27,7 @@ class IntervalFragmentViewModel : BaseViewModel() {
 
     val countriesLD = MutableLiveData<List<CountryFS>>()
     val areasLD = MutableLiveData<List<String>>()
-    val citiesLD = MutableLiveData<List<Pair<String, String>>>()
+    val citiesLD = MutableLiveData<List<City>>()
     val startDateLD = MutableLiveData<Calendar>().apply { postValue(Calendar.getInstance()) }
     val endDateLD = MutableLiveData<Calendar>().apply { postValue(Calendar.getInstance()) }
     val fileHistoryWeatherLD = MutableLiveData<File?>()
@@ -54,15 +55,15 @@ class IntervalFragmentViewModel : BaseViewModel() {
         disposable.add(
             firesoreRepository.fetchArea(area)
                 .safeSubscribe {
-                    val lst = it.cities.toList()
+                    val lst = it.cities.toList().map { City(it.first, it.second) }
                     onCitySelected(lst.first())
                     citiesLD.postValue(lst)
                 }
         )
     }
 
-    fun onCitySelected(city: Pair<String, String>) {
-        request = request.copy(cityName = city.first,cityCode = city.second)
+    fun onCitySelected(city: City) {
+        request = request.copy(cityName = city.name, cityCode = city.index)
     }
 
     fun onIntervalSelected(interval: Interval) {
@@ -73,7 +74,7 @@ class IntervalFragmentViewModel : BaseViewModel() {
 
     fun updateStartDate(time: Calendar) {
         val format = SimpleDateFormat("yyyy")
-        request = request.copy(startDateMil =time.timeInMillis)
+        request = request.copy(startDateMil = time.timeInMillis)
         startDateLD.postValue(time)
     }
 
@@ -91,16 +92,28 @@ class IntervalFragmentViewModel : BaseViewModel() {
         disposable.add(
             when (request.interval) {
                 Interval.DAY -> {
-                    historyWeatherRepository.fetchDailyHistoryWeather(request.cityCode,startYear,endYear)
+                    historyWeatherRepository.fetchDailyHistoryWeather(
+                        request.cityCode,
+                        startYear,
+                        endYear
+                    )
                 }
                 Interval.MONTH -> {
-                    historyWeatherRepository.fetchMonthlyHistoryWeather(request.cityCode,startYear,endYear)
+                    historyWeatherRepository.fetchMonthlyHistoryWeather(
+                        request.cityCode,
+                        startYear,
+                        endYear
+                    )
                 }
                 Interval.QUARTER -> {
-                    historyWeatherRepository.fetchQuarterHistoryWeather(request.cityCode,startYear,endYear)
+                    historyWeatherRepository.fetchQuarterHistoryWeather(
+                        request.cityCode,
+                        startYear,
+                        endYear
+                    )
                 }
             }.flatMap {
-                csvFileManager.saveHistoryWeatherInFile(it,request)
+                csvFileManager.saveHistoryWeatherInFile(it, request)
             }.safeSubscribe {
                 fileHistoryWeatherLD.postValue(it)
             }

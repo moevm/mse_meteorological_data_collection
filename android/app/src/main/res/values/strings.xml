@@ -7,6 +7,7 @@
     <string-array name="actions">
         <item>Показать график</item>
         <item>Показать статистику</item>
+        <item>Поделиться</item>
         <item>Удалить</item>
     </string-array>
 
